@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
 			$table->unsignedBigInteger('user_id');
 			$table->string('link', 500);
-			$table->string('short_link', 30);
+			$table->string('short_link', 30)->unique();
 			$table->string('name', 255)->nullable();
 
 			$table->foreign('user_id')
