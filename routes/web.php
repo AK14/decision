@@ -16,5 +16,7 @@ Route::get('/home', [HomeController::class, 'authIndex'])->name('home');
 
 Route::controller(LinksController::class)->group(function (){
 	Route::get('/link/{id}','show');
-	Route::post('link','store');
+	Route::post('/link','store');
+	Route::put('/link/{id}', 'update');
+	Route::delete('/link/{id}', 'destroy');
 });

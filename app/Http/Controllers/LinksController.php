@@ -4,36 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Links;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\LinkPostRequest;
+use http\Env\Request;
+use Mockery\Exception;
 
 class LinksController extends Controller
 {
-    public function store(Request $request)
+    public function store(LinkPostRequest $request)
     {
-	    $request->validate([
-		    'link' => 'required|max:500',
-		    'short_link' => 'unique:links,short_link'
-	    ]);
-
 		$linkObj = new Links();
-		$linkObj->short_link = $this->generateShortLink( $request->short_link );
+		$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
 		$linkObj->link = $request->link;
 		$linkObj->user_id = $request->user()->id;
 		$linkObj->name = $request->name;
+	    try {
+		    $linkObj->save();
+	    }catch (\Exception $e){
+			return response()->json([
+				'status' => 'error',
+				'message' => "Link Can't save, please try again"
+			], 422);
+			die;
+	    }
 
-		$linkObj->save();
 
 		return response()->json([
 			'status'=>'success'
 		],200);
     }
 
-	private function generateShortLink($str = ''): string
+	public function destroy($id)
 	{
-		if($str === ''){
-			$str = substr(sha1(time()), 0, 8);
+		$link = Links::findOrFail($id);
+		try {
+			$link->delete();
+			return response()->json([
+				'status'=>'success',
+				'message'=>'Link deleted successfully'
+			], 200);
+		}catch (Exception $e){
+			return  response()->json([
+				'status'=>'error',
+				'message'=>"Link can't deleted, please try again"
+			],422);
 		}
-		return env('APP_URL').'/lnk/'. $str;
 	}
+
+
+	private function generateShortLink(): string
+	{
+		return substr(sha1(time()), 0, 8);
+	}
+
+
 
 }
