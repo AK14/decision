@@ -22,4 +22,9 @@ class Links extends Model
 	{
 		return $this->hasMany(Statistic::class,'links_has_statistics');
 	}
+
+	public function getShortLink(): string
+	{
+		return env('APP_URL') .'/lnk/'.$this->short_link;
+	}
 }
