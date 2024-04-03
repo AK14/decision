@@ -29,8 +29,8 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-start p-2">
-                        <a href="/link/{{ $link->id }}" class="mx-2 link-dark"> <i class="bi bi-bar-chart"></i>
-                            Statistic </a>
+                        <a href="/link/{{ $link->id }}" class="mx-2 link-dark">  <i class="bi bi-bar-chart"></i>
+                            Statistic {{ count($link->statistic)  }} </a>
                         <div class="mx-2"><i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($link->created_at)->toFormattedDateString() }}
                         </div>
                     </div>

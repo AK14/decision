@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinksController;
+use App\Http\Controllers\StatisticController;
 
 Route::get('/', function () {
 
@@ -20,3 +21,5 @@ Route::controller(LinksController::class)->group(function (){
 	Route::put('/link/{id}', 'update');
 	Route::delete('/link/{id}', 'destroy');
 });
+
+Route::get('/lnk/{id}', [StatisticController::class,'redirect']);

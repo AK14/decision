@@ -18,7 +18,7 @@ class Links extends Model
 	}
 	public function statistic()
 	{
-		return $this->hasMany(Statistic::class,'links_has_statistics');
+		return $this->belongsToMany(Statistic::class,'links_statistics','link_id','statistic_id');
 	}
 	public function getShortLink(): string
 	{
