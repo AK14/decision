@@ -8,7 +8,7 @@ use App\Models\Statistic;
 
 class StatisticController extends Controller
 {
-    public function redirect(Request $request, $lnk)
+    public function redirect(Request $request, $lnk): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
 		if($link = Links::where('short_link',$lnk)->first())
 		{
@@ -21,5 +21,7 @@ class StatisticController extends Controller
 
 			return redirect($link->link);
 		}
+
+		return redirect('home');
     }
 }

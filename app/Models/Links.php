@@ -12,11 +12,11 @@ class Links extends Model
 		'user_id',
 		'short_link'
 	];
-	public function user()
+	public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
 	{
 		return $this->belongsTo(User::class);
 	}
-	public function statistic()
+	public function statistic(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	{
 		return $this->belongsToMany(Statistic::class,'links_statistics','link_id','statistic_id');
 	}

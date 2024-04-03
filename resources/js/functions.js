@@ -12,13 +12,10 @@ export const showToast = (type, message) => {
 
 export const copyToClipboard = (data) => {
     if(navigator.clipboard){
-        navigator.clipboard.writeText(data).then(r =>
+        navigator.clipboard.writeText(data).then(() =>
             showToast('bg-success', 'Copied')
         )
     }else {
         showToast('bg-warning', 'Your browser does not allow copying');
     }
-
-
-
 }

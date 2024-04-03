@@ -10,7 +10,6 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +44,7 @@ class User extends Authenticatable
         ];
     }
 
-	public function links()
+	public function links(): \Illuminate\Database\Eloquent\Relations\HasMany
 	{
 		return $this->hasMany(Links::class)->with('statistic');
 	}

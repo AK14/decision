@@ -16,10 +16,12 @@ window.onload = () =>{
               url:  action,
               data:fromData
             })
-            .then(function (response){
+            .then(function (){
                 linkModal.hide();
                 fn.showToast('bg-success', 'Link successfully created');
-                window.location.reload();
+                setTimeout(()=>{
+                    window.location.reload();
+                }, 600);
             }).catch( function (error){
                 if(error.response.status === 422 && error.response.data?.errors){
                     /* show errors action*/
@@ -51,7 +53,7 @@ window.onload = () =>{
         /* listener if tap create Link button change form action  */
         let openCretaeLinkModalBtn =  document.querySelector('.create-link-btn');
         if(openCretaeLinkModalBtn){
-            openCretaeLinkModalBtn.addEventListener('click',(e) =>{
+            openCretaeLinkModalBtn.addEventListener('click',() =>{
                 addLinkForm.setAttribute('action', '/link')
                 addLinkForm.setAttribute('method', 'post')
                 addLinkForm.querySelectorAll('input').forEach(input =>{
@@ -66,11 +68,11 @@ window.onload = () =>{
     if(linkCards){
         linkCards.forEach(card => {
             let linkId = card.getAttribute('data-link');
-            let shorLinksCopy = card.querySelector('.copy-link');
-            if (shorLinksCopy){
-                shorLinksCopy.addEventListener('click',(e)=>{
+            let shortLinksCopy = card.querySelector('.copy-link');
+            if (shortLinksCopy){
+                shortLinksCopy.addEventListener('click',(e)=>{
                     e.preventDefault();
-                    let href = cp.href;
+                    let href = shortLinksCopy.href;
                     fn.copyToClipboard(href);
                 })
             }
@@ -87,7 +89,7 @@ window.onload = () =>{
                 })
                     .then(function (response){
                         fn.showToast('bg-success', response.data.message);
-                        let timeOut = setTimeout(()=>{
+                        setTimeout(()=>{
                             window.location.reload();
                         }, 600);
 

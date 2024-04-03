@@ -10,54 +10,51 @@ use Mockery\Exception;
 
 class LinksController extends Controller
 {
-    public function store(LinkCreateRequest $request)
+    public function store(LinkCreateRequest $request): \Illuminate\Http\JsonResponse
     {
-		$linkObj = new Links();
-		$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
-		$linkObj->link = $request->link;
-		$linkObj->user_id = $request->user()->id;
-		$linkObj->name = $request->name;
-
 	    try {
+			$linkObj = new Links();
+			$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
+			$linkObj->link = $request->link;
+			$linkObj->user_id = $request->user()->id;
+			$linkObj->name = $request->name;
+
 		    $linkObj->save();
 	    }catch (\Exception $e){
 			return response()->json([
 				'status' => 'error',
 				'ext-message' => "Link Can't save, please try again"
 			], 422);
-			die;
 	    }
 		return response()->json([
 			'status'=>'success'
 		],200);
     }
 
-	public function update(LinkCreateRequest $request, string $id)
+	public function update(LinkCreateRequest $request, string $id): \Illuminate\Http\JsonResponse
 	{
-		$linkObj = Links::findOrFail($id);
-		$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
-		$linkObj->link = $request->link;
-		$linkObj->user_id = $request->user()->id;
-		$linkObj->name = $request->name;
-
 		try {
+			$linkObj = Links::findOrFail($id);
+			$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
+			$linkObj->link = $request->link;
+			$linkObj->user_id = $request->user()->id;
+			$linkObj->name = $request->name;
 			$linkObj->save();
 		}catch (\Exception $e){
 			return response()->json([
 				'status' => 'error',
 				'ext-message' => "Link Can't update, please try again"
 			], 422);
-			die;
 		}
 		return response()->json([
 			'status'=>'success'
 		],200);
 	}
 
-	public function destroy($id)
+	public function destroy($id): \Illuminate\Http\JsonResponse
 	{
-		$link = Links::findOrFail($id);
 		try {
+			$link = Links::findOrFail($id);
 			$link->delete();
 			return response()->json([
 				'status'=>'success',

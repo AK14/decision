@@ -13,7 +13,7 @@ class Statistic extends Model
 		'device'
 	];
 
-	public function links()
+	public function links(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	{
 		return $this->belongsToMany(Links::class, 'links_statistics','statistic_id','link_id');
 	}

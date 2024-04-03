@@ -23,14 +23,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\Support\Renderable
     {
         return view('home');
     }
 
-	public function authIndex(Request $request)
+	public function authIndex(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
 	{
-
 		$links = $request->user()->links;
 		return view('index', ['links'=> $links]);
 	}
