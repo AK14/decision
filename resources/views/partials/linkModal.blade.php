@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="linkModal" tabindex="-1" aria-labelledby="linkModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -6,8 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form name="newLinkForm" id="newLinkForm" method="POST">
-
+                <form name="newLinkForm" id="newLinkForm" method="POST" action="/link">
                     <div class="row mb-3">
                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10 input-block">

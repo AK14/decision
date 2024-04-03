@@ -4,34 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Links;
 use App\Models\User;
-use App\Http\Requests\LinkPostRequest;
-use http\Env\Request;
+use App\Http\Requests\LinkCreateRequest;
+
 use Mockery\Exception;
 
 class LinksController extends Controller
 {
-    public function store(LinkPostRequest $request)
+    public function store(LinkCreateRequest $request)
     {
 		$linkObj = new Links();
 		$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
 		$linkObj->link = $request->link;
 		$linkObj->user_id = $request->user()->id;
 		$linkObj->name = $request->name;
+
 	    try {
 		    $linkObj->save();
 	    }catch (\Exception $e){
 			return response()->json([
 				'status' => 'error',
-				'message' => "Link Can't save, please try again"
+				'ext-message' => "Link Can't save, please try again"
 			], 422);
 			die;
 	    }
-
-
 		return response()->json([
 			'status'=>'success'
 		],200);
     }
+
+	public function update(LinkCreateRequest $request, string $id)
+	{
+		$linkObj = Links::findOrFail($id);
+		$linkObj->short_link = $request->short_link ?? $this->generateShortLink();
+		$linkObj->link = $request->link;
+		$linkObj->user_id = $request->user()->id;
+		$linkObj->name = $request->name;
+
+		try {
+			$linkObj->save();
+		}catch (\Exception $e){
+			return response()->json([
+				'status' => 'error',
+				'ext-message' => "Link Can't update, please try again"
+			], 422);
+			die;
+		}
+		return response()->json([
+			'status'=>'success'
+		],200);
+	}
 
 	public function destroy($id)
 	{
@@ -50,12 +71,8 @@ class LinksController extends Controller
 		}
 	}
 
-
 	private function generateShortLink(): string
 	{
 		return substr(sha1(time()), 0, 8);
 	}
-
-
-
 }

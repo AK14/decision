@@ -3,8 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row d-flex justify-content-end m-2">
-            <button class="btn btn-primary col-3 " data-bs-toggle="modal" data-bs-target="#linkModal"> Create link
-            </button>
+            <button class="btn btn-primary col-3 create-link-btn" data-bs-toggle="modal" data-bs-target="#linkModal"> Create link </button>
         </div>
 
         @if($links)

@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Links;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LinkPostRequest extends FormRequest
+class LinkCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +25,7 @@ class LinkPostRequest extends FormRequest
     {
         return [
 	        'link' => 'required|max:500|url:http,https',
-//	        'short_link' => 'unique:links,short_link'
+	        'short_link' => [Rule::unique('links')?->ignore($this->id)]
         ];
     }
 

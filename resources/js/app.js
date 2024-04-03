@@ -6,14 +6,15 @@ window.onload = () =>{
     if(addLinkForm){
         // listener for submit
         addLinkForm.addEventListener('submit' ,(e)=>{
-            let linkModal = bootstrap.Modal.getInstance( document.querySelector('#linkModal') );
+            let action = addLinkForm.getAttribute('action');
+            let linkModal = bootstrap.Modal.getOrCreateInstance( document.querySelector('#linkModal') );
             e.preventDefault();
-            let formData = new FormData(addLinkForm);
-            let fomMethod = addLinkForm.method
+            let fromData = new FormData(addLinkForm);
+            fromData.append('_method',addLinkForm.getAttribute('method'))
             axios({
-              method:fomMethod,
-              url:  '/link',
-              data:formData
+              method:'POST',
+              url:  action,
+              data:fromData
             })
             .then(function (response){
                 linkModal.hide();
@@ -29,9 +30,9 @@ window.onload = () =>{
                         errorField.innerHTML = er[1];
                     })
                 }
-                if(error.response.status === 422 && error.response.data?.message){
+                if(error.response.status === 422 && error.response.data?.ext-message){
                     linkModal.hide();
-                    fn.showToast('bg-danger', error.response.data.message);
+                    fn.showToast('bg-danger', error.response.data.ext-message);
                 }
             })
         })
@@ -43,6 +44,18 @@ window.onload = () =>{
                     let errorField = inp.closest('.input-block').querySelector('.invalid-feedback');
                     inp.classList.remove('is-invalid');
                     errorField.innerHTML = '';
+                })
+            })
+        }
+
+        /* listener if tap create Link button change form action  */
+        let openCretaeLinkModalBtn =  document.querySelector('.create-link-btn');
+        if(openCretaeLinkModalBtn){
+            openCretaeLinkModalBtn.addEventListener('click',(e) =>{
+                addLinkForm.setAttribute('action', '/link')
+                addLinkForm.setAttribute('method', 'post')
+                addLinkForm.querySelectorAll('input').forEach(input =>{
+                    input.value = '';
                 })
             })
         }
@@ -91,18 +104,22 @@ window.onload = () =>{
                 e.preventDefault();
                 /* get values from card */
                 let data = {
-                    id :  card.getAttribute('data-link'),
                     name: card.querySelector('.card-title').textContent,
                     link: card.querySelector('.full-link').textContent,
                     short_link: card.querySelector('.short-link').getAttribute('data-value')
                 }
                 /* add values to form fields and open modal */
                 if( addLinkForm ){
-
+                    Object.keys(data).map((key)=>{
+                        let formInput = addLinkForm.querySelector(`input[name="${key}"]`);
+                        formInput.value = String(data[key])
+                    })
+                    addLinkForm.setAttribute('action','/link/'+linkId);
+                    addLinkForm.setAttribute('method','put');
                 }
-                let linkModal = bootstrap.Modal.getInstance( document.querySelector('#linkModal') );
+                let linkModal = bootstrap.Modal.getOrCreateInstance( document.getElementById('linkModal') );
 
-
+                linkModal.show();
             })
         })
     }
