@@ -10,6 +10,11 @@ use Mockery\Exception;
 
 class LinksController extends Controller
 {
+	public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+	{
+		$link = Links::where('id',$id)->with('statistic')->first();
+		return view('link.index')->with('link', $link);
+	}
     public function store(LinkCreateRequest $request): \Illuminate\Http\JsonResponse
     {
 	    try {
