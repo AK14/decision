@@ -6,14 +6,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\StatisticController;
 
-Route::get('/', function () {
-
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'authIndex'])->name('home');
+Route::get('/', [HomeController::class, 'authIndex'])->name('home');
 
 Route::controller(LinksController::class)->group(function (){
 	Route::get('/link/{id}','show');
